@@ -1,0 +1,3 @@
+0:0:0:0:0:0:0:1 - - [07/Jan/2020:14:18:05 +0000] "GET /OnCallApp/self HTTP/1.1" 405 1065 http-bio-8080-exec-2 18
+0:0:0:0:0:0:0:1 - - [07/Jan/2020:14:18:14 +0000] "GET /OnCallApp/ HTTP/1.1" 200 442 http-bio-8080-exec-2 6
+0:0:0:0:0:0:0:1 - - [07/Jan/2020:14:18:24 +0000] "GET /OnCallApp/homepage HTTP/1.1" 405 1065 http-bio-8080-exec-2 1

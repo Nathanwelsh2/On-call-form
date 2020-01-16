@@ -1,0 +1,2 @@
+0:0:0:0:0:0:0:1 - - [04/Dec/2019:15:35:27 +0000] "GET /OnCallApp/ HTTP/1.1" 200 429 http-bio-8080-exec-1 27
+0:0:0:0:0:0:0:1 - - [04/Dec/2019:15:35:35 +0000] "POST /OnCallApp/OnCallApp HTTP/1.1" 500 11310 http-bio-8080-exec-2 557

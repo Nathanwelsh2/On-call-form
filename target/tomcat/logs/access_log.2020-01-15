@@ -1,0 +1,14 @@
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /OnCallApp/ HTTP/1.1" 200 442 http-bio-8080-exec-1 16
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 - http-bio-8080-exec-10 0
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /apple-touch-icon.png HTTP/1.1" 404 - http-bio-8080-exec-10 0
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-10 0
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 - http-bio-8080-exec-10 0
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /apple-touch-icon.png HTTP/1.1" 404 - http-bio-8080-exec-10 0
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-10 0
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /OnCallApp/ HTTP/1.1" 200 442 http-bio-8080-exec-1 1
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 - http-bio-8080-exec-10 0
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /apple-touch-icon.png HTTP/1.1" 404 - http-bio-8080-exec-10 0
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-10 0
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 - http-bio-8080-exec-10 0
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /apple-touch-icon.png HTTP/1.1" 404 - http-bio-8080-exec-10 0
+0:0:0:0:0:0:0:1 - - [15/Jan/2020:15:01:55 +0000] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-10 0
