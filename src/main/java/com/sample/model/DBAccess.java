@@ -20,10 +20,23 @@ public class DBAccess {
 	public static People GetLogin(String UID) {
 
 		People dbuser = null;
+		Connection con;
+		Statement st = null;
+		try {
+			con = DriverManager.getConnection(url, user, password);
+			st = con.createStatement();} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		try (
-
-				Connection con = DriverManager.getConnection(url, user, password);
-				Statement st = con.createStatement();
+				ResultSet att = st.executeQuery("select Attempts from LogOnAttempts where staff_id = "+UID)){
+			if (att.next()) {
+				if (Integer.parseInt(att.getString(1)) >= 3) {
+					return null;
+				}
+			}} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		try(
 				ResultSet rs = st.executeQuery("SELECT * FROM employees where staff_id = "+UID)) {
 			if (rs.next()) {
 				dbuser = new People(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
@@ -31,9 +44,7 @@ public class DBAccess {
 			}
 		} 
 
-
 		catch (SQLException ex) {
-
 			Logger lgr = Logger.getLogger(DBAccess.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);
 			return null;
@@ -45,7 +56,6 @@ public class DBAccess {
 		ArrayList <People> people = new ArrayList<>();
 
 		try (
-
 				Connection con = DriverManager.getConnection(url, user, password);
 				Statement st = con.createStatement();
 				ResultSet rs = st.executeQuery("SELECT * FROM employees where manager = "+UID)) {
@@ -55,9 +65,7 @@ public class DBAccess {
 			return people;
 		} 
 
-
 		catch (SQLException ex) {
-
 			Logger lgr = Logger.getLogger(DBAccess.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);
 			return null;
@@ -68,7 +76,6 @@ public class DBAccess {
 		ArrayList <Timesheets> sheets = new ArrayList<>();
 
 		try (
-
 				Connection con = DriverManager.getConnection(url, user, password);
 				Statement st = con.createStatement();
 				ResultSet rs = st.executeQuery("SELECT * FROM timesheets where staff_id = "+ID)) {
@@ -78,17 +85,15 @@ public class DBAccess {
 			return sheets;
 		} 
 
-
 		catch (SQLException ex) {
-
 			Logger lgr = Logger.getLogger(DBAccess.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);
 			return null;
 		}
 	}
 
-	public static void IncrementFailedLogins(String UID) {
-
+	public static char IncrementFailedLogins(String UID) {
+		char fails = 'n';
 		try (
 				Connection con = DriverManager.getConnection(url, user, password);
 				Statement st = con.createStatement();
@@ -96,20 +101,25 @@ public class DBAccess {
 			if (rs.next()) {
 				int loa = rs.getInt(1);
 				loa++;
-				Connection con1 = DriverManager.getConnection(url, user, password);
-				Statement is = con.createStatement();
-				is.executeQuery("update LogOnAttempts set Attempts = '"+loa+"' where staff_id ="+UID); {
-
-				}
+				if (loa >= 3) {fails = 'y';}
+				try(
+						Connection con1 = DriverManager.getConnection(url, user, password);
+						Statement is = con.createStatement()){
+						is.executeUpdate("update LogOnAttempts set Attempts = '"+loa+"' where staff_id ="+UID); }
+				
+				catch (SQLException ex) {
+					Logger lgr = Logger.getLogger(DBAccess.class.getName());
+					lgr.log(Level.SEVERE, ex.getMessage(), ex);
+				}	
 			}
 		} 
 
 
 		catch (SQLException ex) {
-
 			Logger lgr = Logger.getLogger(DBAccess.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);
 		}
+		return fails;
 	}
 
 	public static void ResetFailedLogins(String UID) {
@@ -117,20 +127,17 @@ public class DBAccess {
 		try (
 				Connection con = DriverManager.getConnection(url, user, password);
 				Statement st = con.createStatement()){
-				st.executeQuery("update LogOnAttempts set Attempts = '"+0+"' where staff_id ="+UID); {
-		} 
+			st.executeUpdate("update LogOnAttempts set Attempts = '"+0+"' where staff_id ="+UID); {
+			} 
 		}
 		catch (SQLException ex) {
-
 			Logger lgr = Logger.getLogger(DBAccess.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);
 		}
 	}
-	
 
-	
 	public static void CreateNewSheet(String UID, String from, String to, String quarts, String activity, String reason) {
-		
+
 		try (
 				Connection con = DriverManager.getConnection(url, user, password);
 				Statement st = con.createStatement();
@@ -143,17 +150,39 @@ public class DBAccess {
 				Statement is = con.createStatement();
 				java.sql.Date sqlfrom = Date.valueOf(from);
 				java.sql.Date sqlto = Date.valueOf(to);
-				is.executeQuery("INSERT INTO Timesheets (Sheet_ID, Staff_ID, Date_From, Date_To, Quarter_Hours, Activity, Reason)"
+				is.executeUpdate("INSERT INTO Timesheets (Sheet_ID, Staff_ID, Date_From, Date_To, Quarter_Hours, Activity, Reason)"
 						+"values ("+loa+", "+UID+", '"+sqlfrom+"', '"+sqlto+"', "+quarts+", '"+activity+"', '"+reason+"');"); {
-				}
+						}
 			}
 		} 
 
 		catch (SQLException ex) {
-
 			Logger lgr = Logger.getLogger(DBAccess.class.getName());
 			lgr.log(Level.SEVERE, ex.getMessage(), ex);
 		}
 	}
+
+	public static void ResetPassword (String id, String newpassword) {
+
+		try (
+				Connection con1 = DriverManager.getConnection(url, user, password);
+				Statement st = con1.createStatement()){
+			st.executeUpdate("update Employees set Password = '"+newpassword+"' where staff_id ="+id);{
+
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DBAccess.class.getName());
+			lgr.log(Level.SEVERE, ex.getMessage(), ex);
+		}
+		ResetFailedLogins(id);
+	}
+
+
+
+
+
+
+
+
 
 }
