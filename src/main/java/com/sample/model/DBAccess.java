@@ -58,7 +58,7 @@ public class DBAccess {
 		try (
 				Connection con = DriverManager.getConnection(url, user, password);
 				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM employees where manager = "+UID)) {
+				ResultSet rs = st.executeQuery("SELECT * FROM employees where manager = "+UID+"order by staff_id")) {
 			while (rs.next()) {
 				people.add(new People(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)));
 			}
@@ -177,7 +177,35 @@ public class DBAccess {
 		ResetFailedLogins(id);
 	}
 
+	public static ArrayList getApprovalSheets(String UID) {
+		ArrayList <ApprovalSheets> approvalsheets = new ArrayList<>();
 
+		try (
+				Connection con = DriverManager.getConnection(url, user, password);
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery("select e.name, t.* from employees e left join timesheets t on t.staff_id = e.staff_id "
+						+"where sheet_id is not null and e.manager = "+UID+" order by t.staff_id, sheet_id;")) {
+			while (rs.next()) {
+				approvalsheets.add(new ApprovalSheets(rs.getString(1)
+						, rs.getString(2)
+						, rs.getString(3)
+						, rs.getString(4)
+						, rs.getString(5)
+						, rs.getString(6)
+						, rs.getString(7)
+						, rs.getString(8)
+						, rs.getString(9)
+						));
+			}
+			return approvalsheets;
+		} 
+
+		catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DBAccess.class.getName());
+			lgr.log(Level.SEVERE, ex.getMessage(), ex);
+			return null;
+		}
+	}
 
 
 

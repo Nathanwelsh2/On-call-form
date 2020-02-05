@@ -61,6 +61,7 @@ public class OnCallServlet extends HttpServlet {
 				if (loggedin == 'y' || user.getPassword().equals(password)) {
 					// Create cookies for log in.      
 					Cookie loggedIn = new Cookie("loggedin", "y");
+					
 
 					// Set expiry date after 1 Hr for cookie.
 					loggedIn.setMaxAge(60*60); 
