@@ -108,7 +108,7 @@ public class OnCallServlet extends HttpServlet {
 		}
 		else {
 			char fails = DBAccess.IncrementFailedLogins(staffno);	
-			String loa = "Your account has been locked out due to too many failed password attempts, please contact your line manager";
+			String loa = "Your account has been locked out due to too many failed password attempts, please contact your line manager.";
 			req.setAttribute("loa", loa);
 			RequestDispatcher view = req.getRequestDispatcher("index.jsp");
 			view.forward(req, resp);

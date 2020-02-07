@@ -6,9 +6,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.mail.FolderNotFoundException;
+import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 
 public class DBAccess {
@@ -78,9 +82,9 @@ public class DBAccess {
 		try (
 				Connection con = DriverManager.getConnection(url, user, password);
 				Statement st = con.createStatement();
-				ResultSet rs = st.executeQuery("SELECT * FROM timesheets where staff_id = "+ID)) {
+				ResultSet rs = st.executeQuery("select t.*, e.name from timesheets t left join employees e on t.staff_id = e.staff_id where t.staff_id = "+ID)) {
 			while (rs.next()) {
-				sheets.add(new Timesheets(rs.getString(1), rs.getString(2), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(3), rs.getString(4)));
+				sheets.add(new Timesheets(rs.getString(1), rs.getString(2), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(3), rs.getString(4), rs.getString(9)));
 			}
 			return sheets;
 		} 
@@ -105,8 +109,8 @@ public class DBAccess {
 				try(
 						Connection con1 = DriverManager.getConnection(url, user, password);
 						Statement is = con.createStatement()){
-						is.executeUpdate("update LogOnAttempts set Attempts = '"+loa+"' where staff_id ="+UID); }
-				
+					is.executeUpdate("update LogOnAttempts set Attempts = '"+loa+"' where staff_id ="+UID); }
+
 				catch (SQLException ex) {
 					Logger lgr = Logger.getLogger(DBAccess.class.getName());
 					lgr.log(Level.SEVERE, ex.getMessage(), ex);
@@ -207,7 +211,57 @@ public class DBAccess {
 		}
 	}
 
+	public static String getMaxSheets() {
 
+		try (
+				Connection con = DriverManager.getConnection(url, user, password);
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery("select max(sheet_id) from timesheets;")){
+			while (rs.next()) {
+				return rs.getString(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void ApproveRejectSheets(ArrayList<String> approved, ArrayList<String> rejected) {
+		int as = approved.size();
+		int rs = rejected.size();
+		String a = null, r = null;
+		for (int i = 0; i < as; i++) {
+
+			if (i==0) {a = approved.get(i);}	
+			else a+= ", "+approved.get(i);
+		}
+		for (int i = 0; i < rs; i++) {
+
+			if (i==0) {r = rejected.get(i);}	
+			else r+= ", "+rejected.get(i);
+		}
+		try {
+			Connection con1 = DriverManager.getConnection(url, user, password);
+			Statement st = con1.createStatement();{}	
+
+			st.executeUpdate("INSERT INTO approved_timesheets (Sheet_ID, Staff_ID, Date_From, Date_To, Quarter_Hours, Activity, Reason, itask)" + 
+					"		select * from timesheets where sheet_id in ("+a+");");
+
+			st.executeUpdate("INSERT INTO rejected_timesheets (Sheet_ID, Staff_ID, Date_From, Date_To, Quarter_Hours, Activity, Reason, itask)\n" + 
+					"		select * from timesheets where sheet_id in ("+r+");");
+				
+			st.executeUpdate("delete from timesheets where sheet_id in ("+a+")");
+			st.executeUpdate("delete from timesheets where sheet_id in ("+r+")");
+
+		}
+		catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DBAccess.class.getName());
+			lgr.log(Level.SEVERE, ex.getMessage(), ex);
+		}
+
+
+	}
 
 
 

@@ -10,7 +10,7 @@ String id = (String) request.getAttribute("id");
 ArrayList <Timesheets> sheets = (ArrayList) request.getAttribute("sheets");
 
 if (sheets.size()>0){
-out.println(id+"s timesheets are are:");
+out.println(sheets.get(1).getName()+"'s timesheets are are:");
 out.println("<table border = '1'><thead><tbody><tr>"
 +"<td>Sheet number</td>"
 +"<td>staff ID</td>"

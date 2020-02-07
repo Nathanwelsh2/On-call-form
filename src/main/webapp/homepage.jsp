@@ -31,7 +31,7 @@ out.print("<form method='post' action='self'><table border = '1'><thead><tbody><
 	+"</table>");
 
 	out.print("<form method='post' action='approveview'>"
-	+"<button type='submit' name='UID' value='"+user.getStaffID()+"'>Approver View</button>"
+	+"<button type='submit' name='uid' value='"+user.getStaffID()+"'>Approver View</button>"
 	+"</form>"
 	);
 

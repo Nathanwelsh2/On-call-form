@@ -3,7 +3,7 @@ package com.sample.model;
 import java.time.LocalDate;
 
 public class Timesheets {
-    String Sheet_ID, Staff_ID, Quarter_Hours;
+    String Sheet_ID, Staff_ID, Quarter_Hours, name;
     String Activity;
     String Reason;
     String Date_from;
@@ -11,7 +11,7 @@ public class Timesheets {
     
     
 	public Timesheets(String sheet_ID, String staff_ID, String quarter_Hours, String activity, String reason, String date_from,
-			String date_To) {
+			String date_To, String name) {
 		super();
 		Sheet_ID = sheet_ID;
 		Staff_ID = staff_ID;
@@ -20,6 +20,11 @@ public class Timesheets {
 		Reason = reason;
 		Date_from = date_from;
 		Date_To = date_To;
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 
