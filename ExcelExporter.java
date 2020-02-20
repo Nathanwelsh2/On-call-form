@@ -3,7 +3,6 @@ import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -17,11 +16,9 @@ public class ExcelExporter {
 
 
 
-	public static void main(String[] args) {
-		//new ExcelExporter().export();
-	}
 
-	public static void export() {
+
+	public static void export(ArrayList<String> approved) {
 
 
 
@@ -32,7 +29,7 @@ public class ExcelExporter {
 		XSSFSheet sheet = workbook.createSheet("On Call");
 
 		writeHeaderLine(sheet, workbook);
-		ArrayList result =  DBAccess.getExcel("1");
+		ArrayList result =  DBAccess.getExcel("1", approved);
 		try {
 			writeDataLines(result, workbook, sheet);
 		} catch (SQLException e) {
@@ -47,6 +44,8 @@ public class ExcelExporter {
 			workbook.write(outputStream);
 
 			workbook.close();
+			
+//			System.out.println (excelFilePath.getAbsolutePath());
 		} 
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -54,14 +53,10 @@ public class ExcelExporter {
 		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
+			
 		}
-
-
-
 	}
-
-
-
 
 
 	protected static void writeHeaderLine(XSSFSheet sheet, XSSFWorkbook workbook) {
