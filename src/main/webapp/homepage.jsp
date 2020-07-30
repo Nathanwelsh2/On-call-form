@@ -23,6 +23,8 @@ out.print("<form method='post' action='self'><table border = '1'><thead><tbody><
        for (Integer i = 0; i < empNo; i++) {
 			out.println("<tr><td>" + employees.get(i).getName()+"</td><td>"+employees.get(i).getStaffID()+"</td><td><INPUT TYPE='radio' name='sa' value='"+employees.get(i).getStaffID()+"'/></td></tr><br>");
 		}
+
+		
 	out.print("</table>"
 	+"<table><tr>"
 	+"<td><button type='submit' name='action' value='PasswordReset'>Reset users password</button></td>"
